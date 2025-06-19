@@ -1,0 +1,63 @@
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+captures/
+.gradle/
+local.properties
+
+# Gradle files
+.gradle/
+build/
+!gradle-wrapper.jar
+
+# Gradle cache
+**/build/
+**/.gradle/
+
+# Signing files
+*.jks
+*.keystore
+*.pem
+
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+*.bak
+*.swp
+
+# Android Studio Navigation Editor temp files
+.navigation/
+
+# Configuration
+*.log
+.vscode/
+*.tmp
+*.orig
+
+# Mac system files
+.DS_Store
+
+# Log files
+*.log
+
+# Kotlin
+*.kotlin_module
+
+# Others
+*.db
+*.db-journal
