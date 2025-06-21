@@ -23,11 +23,19 @@ import com.sandeepk.watchify.ui.screen.componants.MovieCard
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val movies = viewModel.movies.collectAsLazyPagingItems()
-    MovieList(movies)
+    MovieList(
+        movies = movies,
+        isFavourite = { movie -> viewModel.isFavourite(movie) },
+        onFavouriteClick = { movie -> viewModel.toggleFavourite(movie) }
+    )
 }
 
 @Composable
-fun MovieList(movies: LazyPagingItems<Movie>) {
+fun MovieList(
+    movies: LazyPagingItems<Movie>,
+    isFavourite: (Movie) -> Boolean,
+    onFavouriteClick: (Movie) -> Unit
+) {
     when (movies.loadState.refresh) {
         is LoadState.Loading -> {
             // Show full-screen centered loading
@@ -62,7 +70,11 @@ fun MovieList(movies: LazyPagingItems<Movie>) {
                 items(movies.itemCount) { index ->
                     val movie = movies[index]
                     movie?.let {
-                        MovieCard(movie)
+                        MovieCard(
+                            movie = it,
+                            isFavourite = isFavourite(it),
+                            onFavouriteClick = onFavouriteClick
+                        )
                     }
                 }
 

@@ -9,25 +9,38 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sandeepk.watchify.domain.model.Movie
 
+
 @Composable
-fun MovieCard(movie: Movie) {
+fun MovieCard(
+    movie: Movie,
+    isFavourite: Boolean = false,
+    onFavouriteClick: (Movie) -> Unit = {}
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,16 +69,39 @@ fun MovieCard(movie: Movie) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(end = 8.dp),
+                    .weight(1f),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = movie.title ?: "",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(
+                        text = movie.title ?: "",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    IconButton(
+                        onClick = { onFavouriteClick(movie) },
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Favourite",
+                            tint = if (isFavourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(6.dp))
+
                 Text(
                     text = movie.overview ?: "",
                     style = MaterialTheme.typography.bodyMedium,
@@ -77,3 +113,21 @@ fun MovieCard(movie: Movie) {
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun MovieCardPreview() {
+    MaterialTheme {
+        MovieCard(
+            movie = Movie(
+                id = 1,
+                title = "The Dark Knight",
+                overview = "Batman raises the stakes in his war on crime...",
+                posterPath = "/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+            ),
+            isFavourite = false
+        )
+    }
+}
+
