@@ -97,5 +97,10 @@ dependencies {
     implementation ("androidx.paging:paging-runtime:3.3.0")
     implementation ("androidx.paging:paging-compose:3.3.0")
 
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
 
 }

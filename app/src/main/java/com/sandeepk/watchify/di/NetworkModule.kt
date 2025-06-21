@@ -66,11 +66,7 @@ object NetworkModule {
         return retrofit.create(MovieApiService::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideRepository(api: MovieApiService): MovieRepository {
-        return MovieRepositoryImpl(api)
-    }
+
 }
 
 
