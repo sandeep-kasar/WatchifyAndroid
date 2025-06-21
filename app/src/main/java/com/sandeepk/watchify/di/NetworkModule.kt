@@ -3,8 +3,6 @@ package com.sandeepk.watchify.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.sandeepk.watchify.data.remote.MovieApiService
-import com.sandeepk.watchify.data.datasource.MovieRepositoryImpl
-import com.sandeepk.watchify.domain.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
