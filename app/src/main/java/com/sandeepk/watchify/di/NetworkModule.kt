@@ -1,4 +1,4 @@
-package com.sandeepk.watchify.data.di
+package com.sandeepk.watchify.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
