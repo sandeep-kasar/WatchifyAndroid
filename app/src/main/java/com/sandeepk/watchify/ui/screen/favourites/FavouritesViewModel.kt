@@ -7,7 +7,7 @@ import com.sandeepk.watchify.domain.model.Movie
 import com.sandeepk.watchify.domain.usecase.AddFavouriteUseCase
 import com.sandeepk.watchify.domain.usecase.GetAllFavouritesUseCase
 import com.sandeepk.watchify.domain.usecase.IsFavouriteUseCase
-import com.sandeepk.watchify.domain.usecase.    RemoveFavouriteUseCase
+import com.sandeepk.watchify.domain.usecase.RemoveFavouriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +26,7 @@ class FavouriteViewModel @Inject constructor(
 ) : ViewModel() {
 
     val favourites: StateFlow<List<FavouriteMovieEntity>> = getAllFavouritesUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun removeFromFavourites(movieId: Int) {
         viewModelScope.launch {
@@ -37,7 +37,7 @@ class FavouriteViewModel @Inject constructor(
     fun isFavourite(movieId: Int): StateFlow<Boolean> =
         isFavouriteUseCase(movieId)
             .map { it }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun toggleFavourite(movie: Movie) {
         viewModelScope.launch {

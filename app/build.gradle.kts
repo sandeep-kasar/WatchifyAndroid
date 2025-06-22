@@ -97,10 +97,17 @@ dependencies {
     implementation ("androidx.paging:paging-runtime:3.3.0")
     implementation ("androidx.paging:paging-compose:3.3.0")
 
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation ("io.mockk:mockk:1.13.8")
+    testImplementation ("app.cash.turbine:turbine:1.1.0")
+    testImplementation ("junit:junit:4.13).2")
+
+
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
+    testImplementation(kotlin("test"))
 
 
 }
