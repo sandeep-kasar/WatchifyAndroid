@@ -20,14 +20,9 @@ fun getLocalProperty(key: String): String? {
 
 val apiKey: String = getLocalProperty("API_KEY") ?: "\"MISSING_API_KEY\""
 
-
 android {
     namespace = "com.sandeepk.watchify"
     compileSdk = 35
-
-    buildFeatures {
-        buildConfig = true
-    }
 
     defaultConfig {
         applicationId = "com.sandeepk.watchify"
@@ -38,7 +33,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Inject API key into BuildConfig
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
@@ -63,58 +57,74 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     kapt {
         correctErrorTypes = true
     }
+
+    packagingOptions {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "META-INF/NOTICE.md",
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/NOTICE"
+            )
+        }
+    }
 }
 
 dependencies {
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
 
+    // Networking
     implementation(libs.google.gson)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
 
+    // UI
     implementation(libs.coil.compose)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.tooling.preview)
 
-    implementation ("androidx.paging:paging-runtime:3.3.0")
-    implementation ("androidx.paging:paging-compose:3.3.0")
-
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation ("io.mockk:mockk:1.13.8")
-    testImplementation ("app.cash.turbine:turbine:1.1.0")
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("androidx.room:room-testing:2.6.1")
-    androidTestImplementation ("com.google.truth:truth:1.1.5")
-    androidTestImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("app.cash.turbine:turbine:1.1.0")
-    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-
-
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
-    testImplementation(kotlin("test"))
 
+    // Paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
+    testImplementation(libs.paging.common)
 
+    // Testing - Unit
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.room.testing)
+    testImplementation(libs.truth)
+
+    // Testing - Instrumented
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.mockk.android)
 }
