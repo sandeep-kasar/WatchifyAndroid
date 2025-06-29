@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sandeepk.watchify.domain.model.Movie
@@ -114,20 +113,4 @@ fun MovieCard(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun MovieCardPreview() {
-    MaterialTheme {
-        MovieCard(
-            movie = Movie(
-                id = 1,
-                title = "The Dark Knight",
-                overview = "Batman raises the stakes in his war on crime...",
-                posterPath = "/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
-            ),
-            isFavourite = false
-        )
-    }
-}
 
