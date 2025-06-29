@@ -18,7 +18,7 @@ fun getLocalProperty(key: String): String? {
     return null
 }
 
-val apiKey: String = getLocalProperty("API_KEY") ?: "\"MISSING_API_KEY\""
+val apiKey: String = getLocalProperty("API_KEY") ?: "MISSING_API_KEY"
 
 
 android {
