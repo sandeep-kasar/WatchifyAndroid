@@ -9,7 +9,7 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     onLogoutClick: () -> Unit = {}
 ) {
-
+    // TODO this to be implemented in future updates
 }
 
 

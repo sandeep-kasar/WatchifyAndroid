@@ -51,7 +51,7 @@ android {
                 versionNameSuffix = "-debug"
             }
             release {
-                isMinifyEnabled = false
+                isMinifyEnabled = true
                 proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
@@ -83,53 +83,56 @@ android {
 }
 
 dependencies {
+    // --- Runtime Dependencies ---
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
+    implementation(libs.coil.compose)
 
+    // Networking
     implementation(libs.google.gson)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
 
-    implementation(libs.coil.compose)
+    // Paging
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
+
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.tooling.preview)
-
-    implementation ("androidx.paging:paging-runtime:3.3.0")
-    implementation ("androidx.paging:paging-compose:3.3.0")
-
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation ("io.mockk:mockk:1.13.8")
-    testImplementation ("app.cash.turbine:turbine:1.1.0")
-    testImplementation ("junit:junit:4.13.2")
-    testImplementation ("androidx.room:room-testing:2.6.1")
-    androidTestImplementation ("com.google.truth:truth:1.1.5")
-    androidTestImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("app.cash.turbine:turbine:1.1.0")
-    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-
-
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // Not yet in version catalog
 
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
-    testImplementation(kotlin("test"))
 
+    // Debug
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.tooling.preview)
 
+    // --- Unit Testing ---
+    testImplementation(kotlin("test")) // from Kotlin plugin
+    testImplementation(libs.junit4)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.room.testing)
+
+    // --- Android Instrumented Testing ---
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.junit4)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation("androidx.test.ext:junit:1.1.5") // Not in version catalog
 }
+
 
 tasks.withType<Test>().configureEach {
     useJUnit() // or useJUnitPlatform() if you're using JUnit5

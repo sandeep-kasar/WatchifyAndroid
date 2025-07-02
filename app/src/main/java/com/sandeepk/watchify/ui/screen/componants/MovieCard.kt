@@ -94,7 +94,7 @@ fun MovieCard(
                         Icon(
                             imageVector = if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                             contentDescription = "Favourite",
-                            tint = if (isFavourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
