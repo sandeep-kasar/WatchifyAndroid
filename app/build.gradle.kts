@@ -131,6 +131,8 @@ dependencies {
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.truth)
     androidTestImplementation("androidx.test.ext:junit:1.1.5") // Not in version catalog
+
+    implementation("org.bouncycastle:bcprov-jdk15to18:1.70")
 }
 
 
