@@ -24,6 +24,10 @@ turbine = "1.1.0"
 coroutinesTest = "1.7.3"
 kotlinxTest = "1.9.0"
 
+[bundles]
+bouncycastle = ["bouncycastle"]
+
+
 [libraries]
 # AndroidX
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,6 +70,9 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinxTest" }
+
+# Additional Libraries
+bouncycastle = { group = "org.bouncycastle", name = "bcprov-jdk15to18", version = "1.70" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

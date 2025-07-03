@@ -132,7 +132,7 @@ dependencies {
     androidTestImplementation(libs.truth)
     androidTestImplementation("androidx.test.ext:junit:1.1.5") // Not in version catalog
 
-    implementation("org.bouncycastle:bcprov-jdk15to18:1.70")
+    implementation(libs.bouncycastle)
 }
 
 
@@ -188,5 +188,15 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         }
     )
 }
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.bouncycastle") {
+            useVersion("1.70")
+            because("Older versions don't include edec/EdECObjectIdentifiers")
+        }
+    }
+}
+
 
 
