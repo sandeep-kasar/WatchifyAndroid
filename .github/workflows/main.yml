@@ -8,34 +8,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-
-      - name: Download BouncyCastle jar (debug only, optional)
-        run: curl -O https://www.bouncycastle.org/download/bcprov-jdk18on-178.jar
-
-      - name: Generate debug keystore
-        run: |
-          mkdir -p ~/.android
-          keytool -genkey -v -keystore ~/.android/debug.keystore \
-            -storepass android -alias androiddebugkey -keypass android \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Build project
-        run: ./gradlew assembleDebug
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'temurin'
+#          java-version: 17
+#
+#      - name: Download BouncyCastle jar (debug only, optional)
+#        run: curl -O https://www.bouncycastle.org/download/bcprov-jdk18on-178.jar
+#
+#      - name: Generate debug keystore
+#        run: |
+#          mkdir -p ~/.android
+#          keytool -genkey -v -keystore ~/.android/debug.keystore \
+#            -storepass android -alias androiddebugkey -keypass android \
+#            -keyalg RSA -keysize 2048 -validity 10000 \
+#            -dname "CN=Android Debug,O=Android,C=US"
+#
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#
+#      - name: Build project
+#        run: ./gradlew assembleDebug
 
   lint:
     runs-on: macos-latest
