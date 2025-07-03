@@ -20,12 +20,8 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Add BouncyCastle to JVM security providers
-        run: |
-          curl -LJO https://www.bouncycastle.org/download/bcprov-jdk18on-178.jar
-          sudo mkdir -p /usr/lib/jvm/java-17-openjdk/lib/ext
-          sudo mv bcprov-jdk18on-178.jar /usr/lib/jvm/java-17-openjdk/lib/ext/
-          echo "security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider" | sudo tee -a /usr/lib/jvm/java-17-openjdk/conf/security/java.security
+      - name: Download BouncyCastle jar (debug only, optional)
+        run: curl -O https://www.bouncycastle.org/download/bcprov-jdk18on-178.jar
 
       - name: Generate debug keystore
         run: |
