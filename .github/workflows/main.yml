@@ -2,14 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [ "universal_develop" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "universal_develop" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +19,21 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+
+      - name: Add BouncyCastle to JVM security providers
+        run: |
+          curl -LJO https://www.bouncycastle.org/download/bcprov-jdk18on-178.jar
+          sudo mkdir -p /usr/lib/jvm/java-17-openjdk/lib/ext
+          sudo mv bcprov-jdk18on-178.jar /usr/lib/jvm/java-17-openjdk/lib/ext/
+          echo "security.provider.1=org.bouncycastle.jce.provider.BouncyCastleProvider" | sudo tee -a /usr/lib/jvm/java-17-openjdk/conf/security/java.security
+
+      - name: Generate debug keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -genkey -v -keystore ~/.android/debug.keystore \
+            -storepass android -alias androiddebugkey -keypass android \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -49,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lint-report
-          path: app/build/reports/lint-results-debug.html
+          path: app/build/reports/lint-results-debug.xml
 
   unit_test:
     runs-on: macos-latest
@@ -67,41 +82,90 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run unit tests
+      - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
 
       - name: Upload Unit Test Report
         uses: actions/upload-artifact@v4
         with:
           name: unit-test-report
-          path: app/build/reports/tests/testDebugUnitTest
+          path: app/build/test-results/testDebugUnitTest
 
-#  instrumentation_test:
-#    runs-on: macos-latest
-#    needs: unit_test
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'temurin'
-#          java-version: 17
-#
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#
-#      - name: Set up Android emulator
-#        uses: reactivecircus/android-emulator-runner@v2
-#        with:
-#          api-level: 30
-#          target: google_apis
-#          arch: x86_64
-#          script: ./gradlew connectedDebugAndroidTest
-#
-#      - name: Upload Instrumentation Test Report
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: instrumentation-test-report
-#          path: app/build/reports/androidTests/connected
+  jacoco:
+    runs-on: macos-latest
+    needs: unit_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Generate JaCoCo Report
+        run: ./gradlew jacocoTestReport
+
+      - name: Upload JaCoCo XML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+
+  #  instrumentation_test:
+  #    runs-on: macos-latest
+  #    needs: unit_test
+  #
+  #    steps:
+  #      - uses: actions/checkout@v4
+  #
+  #      - name: Set up JDK 17
+  #        uses: actions/setup-java@v3
+  #        with:
+  #          distribution: 'temurin'
+  #          java-version: 17
+  #
+  #      - name: Grant execute permission for gradlew
+  #        run: chmod +x gradlew
+  #
+  #      - name: Set up Android emulator
+  #        uses: reactivecircus/android-emulator-runner@v2
+  #        with:
+  #          api-level: 30
+  #          target: google_apis
+  #          arch: x86_64
+  #          profile: Nexus 6
+  #          script: ./gradlew connectedDebugAndroidTest
+  #
+  #      - name: Upload Instrumentation Test Report
+  #        uses: actions/upload-artifact@v4
+  #        with:
+  #          name: instrumentation-test-report
+  #          path: app/build/reports/androidTests/connected
+
+  sonar:
+    runs-on: macos-latest
+    needs: jacoco
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run SonarQube Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar
