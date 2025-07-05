@@ -44,20 +44,32 @@ android {
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
-        buildTypes {
-            debug {
-                isDebuggable = true
-                applicationIdSuffix = ".debug"
-                versionNameSuffix = "-debug"
-            }
-            release {
-                isMinifyEnabled = true
-                proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-                )
-            }
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(System.getProperty("user.home") + "/.android/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+
+            // Disable v4 signing to avoid BouncyCastle error in CI
+            enableV4Signing = false
         }
+    }
+
+    buildTypes {
+        debug {
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
