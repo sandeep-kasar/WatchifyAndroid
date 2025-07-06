@@ -68,9 +68,6 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinxTest" }
 
-# Additional Libraries
-bouncycastle = { group = "org.bouncycastle", name = "bcprov-jdk15to18", version = "1.70" }
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
