@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1089746003773",
+    "project_id": "watchifyandroid",
+    "storage_bucket": "watchifyandroid.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089746003773:android:693afc4b511748e7570754",
+        "android_client_info": {
+          "package_name": "com.sandeepk.watchify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAWkZv1Wci61sy_UfQYBeKA1QdkS70yQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089746003773:android:a60c3d2a08775c91570754",
+        "android_client_info": {
+          "package_name": "com.sandeepk.watchify.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAWkZv1Wci61sy_UfQYBeKA1QdkS70yQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
