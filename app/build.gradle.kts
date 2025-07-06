@@ -36,19 +36,27 @@ android {
         applicationId = "com.sandeepk.watchify"
         minSdk = 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.00.02"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
-        release {
+
+        create("qa") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            matchingFallbacks += listOf("debug")
+        }
+
+        getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
