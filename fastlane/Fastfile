@@ -21,18 +21,20 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+  desc "Build and upload QA build to Firebase"
+  lane :qa do
+    gradle(
+      task: "bundleQa"
+    )
+
+    firebase_app_distribution(
+      app: "1:1089746003773:android:24debb9738df7702570754",
+      service_credentials_file: "fastlane/firebase_credentials.json",
+      release_notes: "QA Build uploaded via Fastlane",
+      testers: "kasarsandeep1@gmail.com",
+      apk_path: "app/build/outputs/apk/qa/app-qa.apk"
+    )
+
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
-  end
 end
