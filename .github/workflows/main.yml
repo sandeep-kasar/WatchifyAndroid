@@ -36,9 +36,10 @@ jobs:
 
       - name: Upload APK to Firebase App Distribution
         run: |
+          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase_credentials.json"
           firebase appdistribution:distribute app/build/outputs/apk/qa/app-qa.apk \
             --app 1:1089746003773:android:24debb9738df7702570754 \
-            --release-notes "QA build uploaded via GitHub Actions" \
+            --release-notes "$RELEASE_NOTES" \
             --testers "kasarsandeep1@gmail.com"
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase_credentials.json
