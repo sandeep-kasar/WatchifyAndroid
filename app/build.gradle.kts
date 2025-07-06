@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics.plugin)
     id("jacoco")
 }
 
@@ -97,6 +99,9 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.lib)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.tooling.preview)
